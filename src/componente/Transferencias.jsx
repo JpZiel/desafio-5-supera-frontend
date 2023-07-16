@@ -77,5 +77,4 @@ const Transferencias = () => {
     </div>
   );
 };
-
 export default Transferencias;
