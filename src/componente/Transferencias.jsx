@@ -7,13 +7,19 @@ const Transferencias = () => {
   const [dataInicio, setDataInicio] = useState("");
   const [dataFim, setDataFim] = useState("");
   const [nome, setNomeOperador] = useState("");
+  const [numeroDaConta, setIdConta] = useState("");
 
   const fetchTransferencias = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8080/api/transferencias",
+        "http://localhost:8083/banco/v1/transferencias",
         {
-          params: { page: "1", size: "5" },
+          params: {
+            id_conta: numeroDaConta,
+            data_inicio: dataInicio,
+            data_fim: dataFim,
+            nome_operador: nome,
+          },
         }
       );
       setTransferencias(response.data.content);
@@ -44,6 +50,12 @@ const Transferencias = () => {
           value={dataFim}
           onChange={(e) => setDataFim(e.target.value)}
         />
+        <label>Numero Conta:</label>
+        <input
+          type="text"
+          value={numeroDaConta}
+          onChange={(e) => setIdConta(e.target.value)}
+        />
         <label>Nome:</label>
         <input
           type="text"
@@ -56,19 +68,19 @@ const Transferencias = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Origem</th>
-            <th>Destino</th>
+            <th>Nome</th>
+            <th>Tipo</th>
             <th>Data</th>
             <th>Valor</th>
           </tr>
         </thead>
         <tbody>
-          {transferencias.map((transferencia) => (
+          {transferencias?.map((transferencia) => (
             <tr key={transferencia.id}>
               <td>{transferencia.id}</td>
-              <td>{transferencia.origem}</td>
-              <td>{transferencia.destino}</td>
-              <td>{transferencia.data}</td>
+              <td>{transferencia.nome_operador_transacao}</td>
+              <td>{transferencia.tipo}</td>
+              <td>{transferencia.data_transferencia}</td>
               <td>{transferencia.valor}</td>
             </tr>
           ))}
